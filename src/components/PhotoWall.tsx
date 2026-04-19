@@ -178,22 +178,31 @@ export default function PhotoWall() {
 }
 
 function SlotImage({ uploaded, index }: { uploaded: string | null; index: number }) {
+  const [defaultLoaded, setDefaultLoaded] = useState(false)
   const [defaultFailed, setDefaultFailed] = useState(false)
+
   if (uploaded) return <img src={uploaded} alt={`memory ${index + 1}`} />
-  if (!defaultFailed) {
-    return (
-      <img
-        src={DEFAULT_FILES[index]}
-        alt={`memory ${index + 1}`}
-        onError={() => setDefaultFailed(true)}
-      />
-    )
-  }
-  return (
+
+  const empty = (
     <div className="photo-empty">
       <div className="plus">＋</div>
       <div className="jp-add">写真を追加</div>
       <div className="lbl">Agregar foto</div>
     </div>
+  )
+
+  if (defaultFailed) return empty
+
+  return (
+    <>
+      {!defaultLoaded && empty}
+      <img
+        src={DEFAULT_FILES[index]}
+        alt={`memory ${index + 1}`}
+        style={{ display: defaultLoaded ? 'block' : 'none' }}
+        onLoad={() => setDefaultLoaded(true)}
+        onError={() => setDefaultFailed(true)}
+      />
+    </>
   )
 }

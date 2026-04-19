@@ -132,6 +132,75 @@ else fail(`console errors: ${errors.slice(0, 3).join(' | ')}`)
 
 await page.screenshot({ path: `${OUT_DIR}/04-final.png`, fullPage: true })
 
+// =============================================================
+// iPhone-class viewport (iPhone 14 Pro = 393x852)
+// =============================================================
+await ctx.close()
+const mctx = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 3 })
+const m = await mctx.newPage()
+const mErrors = []
+m.on('console', (x) => x.type() === 'error' && mErrors.push(x.text()))
+m.on('pageerror', (e) => mErrors.push('pageerror: ' + e.message))
+await m.goto(URL, { waitUntil: 'networkidle' })
+await m.waitForTimeout(500)
+
+const viewportW = 393
+const horiz = async (sel) => {
+  const b = await m.locator(sel).boundingBox()
+  return b ? Math.round(b.x + b.width) : null
+}
+
+// No horizontal overflow on any major block
+const bodyW = await m.evaluate(() => document.documentElement.scrollWidth)
+if (bodyW <= viewportW + 1) pass(`mobile: no horizontal overflow (scrollWidth=${bodyW})`)
+else fail(`mobile: horizontal overflow (scrollWidth=${bodyW} > ${viewportW})`)
+
+// Hero title fits
+const titleBox = await m.locator('.title').boundingBox()
+if (titleBox && titleBox.width <= viewportW) pass(`mobile: hero title fits (${Math.round(titleBox.width)}px)`)
+else fail(`mobile: hero title overflow (${titleBox && Math.round(titleBox.width)}px)`)
+await m.screenshot({ path: `${OUT_DIR}/m1-hero.png`, fullPage: false })
+
+// Scroll to mixtape and capture
+await m.locator('.mix-bg').scrollIntoViewIfNeeded()
+await m.waitForTimeout(300)
+await m.screenshot({ path: `${OUT_DIR}/m2-mixtape.png`, fullPage: false })
+
+// DJ section: mixer is full-width above the two decks
+await m.locator('.surf').scrollIntoViewIfNeeded()
+await m.waitForTimeout(400)
+const mMixerBox = await m.locator('.surf .mixer').boundingBox()
+const mDeckLBox = await m.locator('.surf .deck.left').boundingBox()
+const mDeckRBox = await m.locator('.surf .deck.right').boundingBox()
+if (mMixerBox && mDeckLBox && mDeckRBox && mMixerBox.y + mMixerBox.height <= mDeckLBox.y + 4 && Math.abs(mDeckLBox.y - mDeckRBox.y) < 10) {
+  pass('mobile: mixer is above decks, decks side-by-side')
+} else {
+  fail(`mobile: DJ layout wrong — mixer ${JSON.stringify(mMixerBox)} deckL ${JSON.stringify(mDeckLBox)} deckR ${JSON.stringify(mDeckRBox)}`)
+}
+if (mDeckLBox && Math.abs(mDeckLBox.width - mDeckLBox.height) < 3) pass(`mobile: deck.left square (${Math.round(mDeckLBox.width)}x${Math.round(mDeckLBox.height)})`)
+else fail(`mobile: deck.left not square`)
+await m.screenshot({ path: `${OUT_DIR}/m3-dj.png`, fullPage: false })
+
+// Polaroids: single column
+await m.locator('.pokes').scrollIntoViewIfNeeded()
+await m.waitForTimeout(300)
+const p1 = await m.locator('.pokes .polaroid').first().boundingBox()
+const p2 = await m.locator('.pokes .polaroid').nth(1).boundingBox()
+if (p1 && p2 && p2.y > p1.y + p1.height - 10) pass('mobile: photo wall is single column')
+else fail(`mobile: photo wall not single-column — p1 ${JSON.stringify(p1)} p2 ${JSON.stringify(p2)}`)
+await m.screenshot({ path: `${OUT_DIR}/m4-polaroids.png`, fullPage: false })
+
+// Flip card fits
+await m.locator('#flip').scrollIntoViewIfNeeded()
+await m.waitForTimeout(300)
+const flipBox = await m.locator('#flip').boundingBox()
+if (flipBox && flipBox.width <= viewportW - 20) pass(`mobile: flip card fits (${Math.round(flipBox.width)}px)`)
+else fail(`mobile: flip card overflow (${flipBox && Math.round(flipBox.width)}px)`)
+await m.screenshot({ path: `${OUT_DIR}/m5-message.png`, fullPage: false })
+
+if (mErrors.length === 0) pass('mobile: no console errors')
+else fail(`mobile console errors: ${mErrors.slice(0, 3).join(' | ')}`)
+
 await browser.close()
 
 // --- Report ---
