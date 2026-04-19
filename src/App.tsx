@@ -3,7 +3,6 @@ import Mixtape from './components/Mixtape'
 import DjDeck from './components/DjDeck'
 import PhotoWall from './components/PhotoWall'
 import Message from './components/Message'
-import Tweaks from './components/Tweaks'
 import { useEffect } from 'react'
 import { initConfetti } from './lib/confetti'
 
@@ -19,7 +18,6 @@ export default function App() {
       <DjDeck />
       <PhotoWall />
       <Message />
-      <Tweaks />
       <canvas id="confetti" />
     </>
   )
