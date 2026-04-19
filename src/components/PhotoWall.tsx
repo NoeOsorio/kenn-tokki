@@ -3,14 +3,14 @@ import { useState } from 'react'
 type Slot = { src: string; caption: string; date: string }
 
 const SLOTS: Slot[] = [
-  { src: '/photos/01.jpg', caption: 'primera cita ♡', date: '2024 · 03' },
-  { src: '/photos/02.jpg', caption: 'día de playa', date: '2024 · 07' },
-  { src: '/photos/03.jpg', caption: 'la cabina', date: '2024 · 11' },
-  { src: '/photos/04.jpg', caption: 'noche de sushi', date: '2025 · 02' },
-  { src: '/photos/05.jpg', caption: 'roadtrip', date: '2025 · 05' },
-  { src: '/photos/06.jpg', caption: 'backstage', date: '2025 · 08' },
-  { src: '/photos/07.jpg', caption: 'por café', date: '2025 · 11' },
-  { src: '/photos/08.jpg', caption: 'nuestra canción', date: '2026 · 04' },
+  { src: '/photos/01.jpg', caption: 'Primera cita ♡', date: '2025' },
+  { src: '/photos/02.jpg', caption: 'Noche de pasta', date: '2025' },
+  { src: '/photos/03.jpg', caption: 'Halloween', date: '2025' },
+  { src: '/photos/04.jpg', caption: 'Puerto Vallarta', date: '2025' },
+  { src: '/photos/05.jpg', caption: 'Times Square', date: '2026' },
+  { src: '/photos/06.jpg', caption: 'Brooklyn', date: '2026' },
+  { src: '/photos/07.jpg', caption: 'Congelados', date: '2026' },
+  { src: '/photos/08.jpg', caption: 'NYC Views', date: '2026' },
 ]
 
 export default function PhotoWall() {

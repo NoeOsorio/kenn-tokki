@@ -30,7 +30,7 @@ export default function Message() {
     <section className="msg-bg" data-screen-label="05 Message">
       <div className="wrap">
         <div className="eyebrow" style={{ color: '#ff2d95' }}>
-          Última Canción <b>◆</b> Para ti, Kenn
+          Última Canción <b>◆</b> Para ti, mí hielito
         </div>
         <h2 className="h2">
           La tarjeta<br />
@@ -72,29 +72,19 @@ export default function Message() {
                 Kenn ♡<small>お誕生日おめでとう</small>
               </div>
               <div className="msg-body">
-                Que este año te traiga más <span className="hl">noches con pista llena</span>, más olas para las{' '}
-                <span className="hl">Hot Maries</span>, más ramen a las 2 AM, y todas las criaturitas de bolsillo que aún
-                te faltan.
+                Eres una <span className="hl">bendicion del universo</span>, y hoy celebro con todo mi corazon tu fuerza,
+                tu dedicacion, tu amor y la ternura con la que iluminas mis dias.
                 <br />
                 <br />
-                Gracias por poner la mejor música y por hacer que todo suene un poquito más brillante. Te queremos un
-                montón.
+                Estoy profundamente orgulloso de ti y agradecido por todo el carino y amor que me regalas dia con dia.
+                Eres mi compañera de cafecito, de juegos y de vida; eres mi hogar, mi lugar bonito en el mundo. Te amo,
+                mi hielito.
               </div>
               <div className="sig">— Noe ♡</div>
             </div>
           </div>
         </div>
-        <p
-          style={{
-            marginTop: 24,
-            fontSize: 11,
-            letterSpacing: '.3em',
-            color: 'rgba(255,244,224,.55)',
-            textTransform: 'uppercase',
-          }}
-        >
-          Toca la tarjeta para abrirla ◆ tap otra vez para cerrar
-        </p>
+       
       </div>
     </section>
   )

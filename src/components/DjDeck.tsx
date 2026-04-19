@@ -295,13 +295,13 @@ export default function DjDeck() {
                 </div>
               </div>
               <div className="dj-caption">
-                KENN × HOT MARIES ◆ <b>Toca</b> los pads ◆ <b>Arrastra</b> el jog derecho ◆ <b>Mueve</b> el crossfader
+                KENN <b>TOKKI</b> ◆ Alma <b>Hermosa</b> ◆ Risa <b>Contagiosa</b>◆ Mente <b>Creativa</b>
               </div>
             </div>
 
             <div className="surf-copy">
               <div className="eyebrow" style={{ color: '#ffd166' }}>
-                ESTUDIOS MARIPOSA <b style={{ color: '#fff' }}>◆</b> Primer Prensado
+                ESTUDIOS HIELITO <b style={{ color: '#fff' }}>◆</b> MISS KARY
               </div>
               <h2 className="h2">
                 Surf pop<br />
@@ -311,18 +311,18 @@ export default function DjDeck() {
                 サーフ・ポップ・プリンセス
               </div>
               <p>
-                Reverb con twang, sintes color espuma de mar, y el tipo de coro que tarareas de camino a casa a las 4 AM.
-                De CDMX a la costa — las Hot Maries agarraron su ola y tú ibas parada en la punta de la tabla todo el
-                tiempo.
+                Artista de alma luminosa, amante de los gatitos y de esas bolsas de peluche que parecen abrazos.
+                La mejor compañera de risas y cafesito, de tardes suaves y momentos que se quedan brillando un ratito
+                mas en el corazón.
               </p>
               <div className="stats">
                 <div className="stat">
-                  <b>07</b>
-                  <span>Sencillos ◆ 45s</span>
+                  <b>04</b>
+                  <span>Sencillos ◆ 4min</span>
                 </div>
                 <div className="stat">
-                  <b>118</b>
-                  <span>BPM ◆ Tempo House</span>
+                  <b>408</b>
+                  <span>Meses ◆ Amor</span>
                 </div>
                 <div className="stat">
                   <b>∞</b>

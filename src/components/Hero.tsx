@@ -55,13 +55,13 @@ export default function Hero() {
         <div className="jp-title">渋谷ナイトクルーズ ✦ 2026</div>
         <div className="chip-row">
           <div className="chip">
-            Selectora <b>◆</b> DJ CDMX
+            Influencer DJ <b>◆</b> CDMX
           </div>
           <div className="chip">
             Hot Maries <b>◆</b> Surf Pop
           </div>
           <div className="chip">
-            Entrenadora <b>◆</b> NV. 26
+            Novia <b>◆</b> NV. 34
           </div>
         </div>
       </div>
