@@ -803,10 +803,56 @@
 
   /* ---------- FOOTER ---------- */
   footer{
-    background:#0a0a2e;padding:50px 24px;text-align:center;border-top:1px solid rgba(255,244,224,.1);
+    position:relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,45,149,.25) 0%, transparent 70%),
+      linear-gradient(180deg,#0a0a2e 0%,#13093a 100%);
+    padding:64px 24px 72px;text-align:center;
+    border-top:1px dashed rgba(255,244,224,.18);
+    overflow:hidden;
   }
-  footer .m{font-family:"DotGothic16";letter-spacing:.4em;font-size:11px;color:rgba(255,244,224,.55);text-transform:uppercase}
-  footer .big{font-family:"Monoton";font-size:28px;color:var(--mag);margin-top:8px;letter-spacing:.02em}
+  footer::before{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg, transparent 0 calc(5vw - 1px), rgba(0,229,255,.06) calc(5vw - 1px) 5vw);
+    pointer-events:none;opacity:.5;
+  }
+  footer > *{position:relative;z-index:1}
+  footer .m{
+    font-family:"DotGothic16",sans-serif;letter-spacing:.4em;font-size:11px;
+    color:rgba(255,244,224,.55);text-transform:uppercase;
+  }
+  footer .big{
+    display:inline-block;margin-top:10px;
+    font-family:"Monoton",cursive;font-size:clamp(30px,5vw,44px);
+    color:var(--mag);letter-spacing:.04em;text-decoration:none;
+    text-shadow:2px 2px 0 #0a0a2e, 0 0 24px rgba(255,45,149,.5);
+    transition:color .2s, text-shadow .2s, transform .2s;
+  }
+  footer .big:hover{
+    color:var(--cyan);
+    text-shadow:2px 2px 0 #0a0a2e, 0 0 28px rgba(0,229,255,.6);
+    transform:translateY(-1px);
+  }
+  footer .footer-jp{
+    margin-top:6px;
+    font-family:"Shippori Mincho",serif;font-weight:700;
+    color:#ffd166;letter-spacing:.25em;font-size:11px;
+  }
+  footer .footer-gift{
+    margin:32px auto 0;max-width:420px;
+    padding-top:22px;border-top:1px solid rgba(255,244,224,.12);
+    display:flex;flex-direction:column;gap:8px;align-items:center;
+  }
+  footer .footer-gift-line{
+    font-family:"DotGothic16",sans-serif;font-size:10px;
+    letter-spacing:.3em;color:rgba(255,244,224,.5);text-transform:uppercase;
+  }
+  footer .footer-gift-name{
+    font-family:"Caveat","Shippori Mincho",cursive;font-weight:700;
+    font-size:clamp(26px,4vw,36px);color:var(--cream);
+    text-shadow:0 2px 0 rgba(10,10,46,.6);
+  }
+  footer .footer-year{margin-top:26px;opacity:.7;font-size:10px;letter-spacing:.35em}
 
   /* ---------- TWEAKS ---------- */
   .tweaks{
