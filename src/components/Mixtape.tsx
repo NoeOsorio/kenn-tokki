@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-type Track = { t: string; n: string; sub: string; dur: string }
+type Track = { t: string; n: string; sub: string; dur: string; src?: string }
 
 const TRACKS: Track[] = [
   { t: 'Medianoche en Shibuya', n: '01', sub: 'City Pop ◆ Apertura', dur: '3:42' },
@@ -10,24 +10,104 @@ const TRACKS: Track[] = [
   { t: 'Boogie de Bolsillo', n: '05', sub: 'Chip-Funk ◆ metales de 8 bits', dur: '2:48' },
   { t: 'Surf de Polanco', n: '06', sub: 'Surf CDMX ◆ cálido y vibrante', dur: '4:07' },
   { t: 'Harajuku Corazón Roto', n: '07', sub: 'Boogie ◆ redoblantes con gate', dur: '4:44' },
-  { t: 'Feliz Cumpleaños Kenn', n: '08', sub: 'Pista oculta ◆ mantén presionado', dur: '∞' },
+  {
+    t: 'Feliz Cumpleaños Kenn',
+    n: '08',
+    sub: 'Pista oculta ◆ mantén presionado',
+    dur: '∞',
+    src: '/songs/happy-bday-tokki.wav',
+  },
 ]
 
 export default function Mixtape() {
   const [active, setActive] = useState<number | null>(null)
   const [playing, setPlaying] = useState(false)
+  const [flash, setFlash] = useState<string | null>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const flashTimer = useRef<number | null>(null)
 
-  const activeName = active !== null ? TRACKS[active].t : null
-  const trackname = playing && activeName ? `♪ ${activeName}` : active === null && !playing ? '— Dale Play —' : '— Detenido —'
-  const windowText = playing ? '▶ PLAY' : active === null ? 'LISTO' : '■ STOP'
+  const activeTrack = active !== null ? TRACKS[active] : null
 
-  const play = (idx: number) => {
-    setActive(idx)
-    setPlaying(true)
+  const trackname = flash
+    ? flash
+    : playing && activeTrack
+    ? `♪ ${activeTrack.t}`
+    : active === null
+    ? '— Dale Play —'
+    : `— ${activeTrack!.t} —`
+
+  const windowText = playing ? '▶ PLAY' : active === null ? 'LISTO' : '‖ PAUSE'
+
+  const showFlash = (msg: string) => {
+    setFlash(msg)
+    if (flashTimer.current) window.clearTimeout(flashTimer.current)
+    flashTimer.current = window.setTimeout(() => setFlash(null), 1500)
   }
+
+  const playTrack = (idx: number) => {
+    const t = TRACKS[idx]
+    const audio = audioRef.current
+    if (!audio) return
+    if (!t.src) {
+      showFlash('— Próximamente ✦ Coming soon —')
+      return
+    }
+    if (active !== idx) {
+      audio.src = t.src
+      setActive(idx)
+    }
+    audio.play().catch(() => {
+      showFlash('— Play bloqueado, intenta de nuevo —')
+    })
+  }
+
+  const pauseTrack = () => {
+    audioRef.current?.pause()
+  }
+
   const stop = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.pause()
+    audio.currentTime = 0
     setPlaying(false)
   }
+
+  const onPrimary = () => {
+    if (playing) {
+      pauseTrack()
+    } else if (active !== null) {
+      playTrack(active)
+    } else {
+      // default: play the only available song (track 8)
+      const firstAvailable = TRACKS.findIndex((t) => t.src)
+      if (firstAvailable >= 0) playTrack(firstAvailable)
+      else showFlash('— Sin canciones disponibles —')
+    }
+  }
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
+    const onEnded = () => setPlaying(false)
+    audio.addEventListener('play', onPlay)
+    audio.addEventListener('pause', onPause)
+    audio.addEventListener('ended', onEnded)
+    return () => {
+      audio.removeEventListener('play', onPlay)
+      audio.removeEventListener('pause', onPause)
+      audio.removeEventListener('ended', onEnded)
+    }
+  }, [])
+
+  useEffect(
+    () => () => {
+      if (flashTimer.current) window.clearTimeout(flashTimer.current)
+    },
+    []
+  )
 
   return (
     <section className="mix-bg" data-screen-label="02 Mixtape">
@@ -74,25 +154,33 @@ export default function Mixtape() {
               LISTA DE CANCIONES <b>◆</b> 08 TEMAS
             </div>
             <div className="tracklist" id="tracklist">
-              {TRACKS.map((t, i) => (
-                <div
-                  key={i}
-                  className={'tr' + (active === i ? ' active' : '')}
-                  data-t={t.t}
-                  onClick={() => play(i)}
-                >
-                  <div className="n">{t.n}</div>
-                  <div className="name">
-                    {t.t}
-                    <small>{t.sub}</small>
+              {TRACKS.map((t, i) => {
+                const available = !!t.src
+                return (
+                  <div
+                    key={i}
+                    className={
+                      'tr' +
+                      (active === i ? ' active' : '') +
+                      (available ? '' : ' unavailable')
+                    }
+                    data-t={t.t}
+                    onClick={() => playTrack(i)}
+                    style={available ? undefined : { opacity: 0.55, cursor: 'not-allowed' }}
+                  >
+                    <div className="n">{t.n}</div>
+                    <div className="name">
+                      {t.t}
+                      <small>{available ? t.sub : `${t.sub} ◆ próximamente`}</small>
+                    </div>
+                    <div className="dur">{t.dur}</div>
                   </div>
-                  <div className="dur">{t.dur}</div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             <div className="play-row">
-              <button className="btn primary" id="playBtn" onClick={() => play(0)}>
-                ▶ Reproducir Lado A
+              <button className="btn primary" id="playBtn" onClick={onPrimary}>
+                {playing ? '‖ Pausar' : '▶ Reproducir'}
               </button>
               <button className="btn" id="stopBtn" onClick={stop}>
                 ■ Detener
@@ -101,6 +189,8 @@ export default function Mixtape() {
           </div>
         </div>
       </div>
+
+      <audio ref={audioRef} preload="none" />
     </section>
   )
 }
