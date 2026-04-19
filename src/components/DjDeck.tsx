@@ -298,36 +298,36 @@ export default function DjDeck() {
                 KENN × HOT MARIES ◆ <b>Toca</b> los pads ◆ <b>Arrastra</b> el jog derecho ◆ <b>Mueve</b> el crossfader
               </div>
             </div>
-          </div>
 
-          <div className="surf-copy">
-            <div className="eyebrow" style={{ color: '#ffd166' }}>
-              ESTUDIOS MARIPOSA <b style={{ color: '#fff' }}>◆</b> Primer Prensado
-            </div>
-            <h2 className="h2">
-              Surf pop<br />
-              princesa.
-            </h2>
-            <div className="jp" style={{ color: '#fff4e0' }}>
-              サーフ・ポップ・プリンセス
-            </div>
-            <p>
-              Reverb con twang, sintes color espuma de mar, y el tipo de coro que tarareas de camino a casa a las 4 AM.
-              De CDMX a la costa — las Hot Maries agarraron su ola y tú ibas parada en la punta de la tabla todo el
-              tiempo.
-            </p>
-            <div className="stats">
-              <div className="stat">
-                <b>07</b>
-                <span>Sencillos ◆ 45s</span>
+            <div className="surf-copy">
+              <div className="eyebrow" style={{ color: '#ffd166' }}>
+                ESTUDIOS MARIPOSA <b style={{ color: '#fff' }}>◆</b> Primer Prensado
               </div>
-              <div className="stat">
-                <b>118</b>
-                <span>BPM ◆ Tempo House</span>
+              <h2 className="h2">
+                Surf pop<br />
+                princesa.
+              </h2>
+              <div className="jp" style={{ color: '#fff4e0' }}>
+                サーフ・ポップ・プリンセス
               </div>
-              <div className="stat">
-                <b>∞</b>
-                <span>Tocadas por venir</span>
+              <p>
+                Reverb con twang, sintes color espuma de mar, y el tipo de coro que tarareas de camino a casa a las 4 AM.
+                De CDMX a la costa — las Hot Maries agarraron su ola y tú ibas parada en la punta de la tabla todo el
+                tiempo.
+              </p>
+              <div className="stats">
+                <div className="stat">
+                  <b>07</b>
+                  <span>Sencillos ◆ 45s</span>
+                </div>
+                <div className="stat">
+                  <b>118</b>
+                  <span>BPM ◆ Tempo House</span>
+                </div>
+                <div className="stat">
+                  <b>∞</b>
+                  <span>Tocadas por venir</span>
+                </div>
               </div>
             </div>
           </div>
