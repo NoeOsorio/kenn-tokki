@@ -232,6 +232,21 @@
   .tr.active{background:rgba(255,45,149,.12)}
   .tr.active .name{color:var(--mag)}
 
+  /* Hot Maries easter-egg tracks — real song names, no audio */
+  .tr.hot-maries .n{color:#ffd166}
+  .tr.hot-maries .name{color:#fff4e0}
+  .tr.hot-maries:hover{background:rgba(255,209,102,.06)}
+  .hm-badge{
+    display:inline-block;margin-left:10px;
+    padding:2px 7px;border-radius:3px;vertical-align:2px;
+    background:linear-gradient(135deg,#ff2d95 0%,#ffd166 100%);
+    color:#0a0a2e;
+    font-family:"DotGothic16",sans-serif;font-size:9px;
+    letter-spacing:.18em;font-weight:400;
+    text-transform:uppercase;
+    box-shadow:0 2px 0 #0a0a2e;
+  }
+
   .play-row{display:flex;gap:10px;margin-top:26px}
   .btn{
     padding:12px 22px;border:2px solid var(--cream);border-radius:4px;

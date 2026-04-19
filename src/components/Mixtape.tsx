@@ -1,15 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 
-type Track = { t: string; n: string; sub: string; dur: string; src?: string }
+type Track = {
+  t: string
+  n: string
+  sub: string
+  dur: string
+  src?: string
+  /** easter-egg Hot Maries tracks: real songs, no audio attached */
+  hm?: boolean
+}
 
 const TRACKS: Track[] = [
   { t: 'Medianoche en Shibuya', n: '01', sub: 'City Pop ◆ Apertura', dur: '3:42' },
   { t: 'Coco de Neón', n: '02', sub: 'Surf Boogie ◆ Dedicada a las Hot Maries', dur: '4:18' },
   { t: 'Tokio al Atardecer', n: '03', sub: 'Synth Funk ◆ 110 BPM', dur: '5:02' },
-  { t: 'Ramen y Rosas', n: '04', sub: 'Slow Jam ◆ para bailar sobre la barra', dur: '3:55' },
-  { t: 'Boogie de Bolsillo', n: '05', sub: 'Chip-Funk ◆ metales de 8 bits', dur: '2:48' },
-  { t: 'Surf de Polanco', n: '06', sub: 'Surf CDMX ◆ cálido y vibrante', dur: '4:07' },
-  { t: 'Harajuku Corazón Roto', n: '07', sub: 'Boogie ◆ redoblantes con gate', dur: '4:44' },
+  { t: 'Oh', n: '04', sub: 'Hot Maries ♡ Surf Pop', dur: '2:30', hm: true },
+  { t: 'Oh Sweet', n: '05', sub: 'Hot Maries ♡ Surf Pop', dur: '3:40', hm: true },
+  { t: 'Blue Monday', n: '06', sub: 'Hot Maries ♡ Surf Pop', dur: '3:20', hm: true },
+  { t: "I Won't Be There", n: '07', sub: 'Hot Maries ♡ Surf Pop', dur: '2:14', hm: true },
   {
     t: 'Feliz Cumpleaños Kenn',
     n: '08',
@@ -49,7 +57,7 @@ export default function Mixtape() {
     const audio = audioRef.current
     if (!audio) return
     if (!t.src) {
-      showFlash('— Próximamente ✦ Coming soon —')
+      showFlash(t.hm ? `♡ ${t.t} ◆ Hot Maries` : '— Próximamente ✦ Coming soon —')
       return
     }
     if (active !== idx) {
@@ -156,22 +164,25 @@ export default function Mixtape() {
             <div className="tracklist" id="tracklist">
               {TRACKS.map((t, i) => {
                 const available = !!t.src
+                const classes =
+                  'tr' +
+                  (active === i ? ' active' : '') +
+                  (available ? '' : ' unavailable') +
+                  (t.hm ? ' hot-maries' : '')
+                const subText = available || t.hm ? t.sub : `${t.sub} ◆ próximamente`
                 return (
                   <div
                     key={i}
-                    className={
-                      'tr' +
-                      (active === i ? ' active' : '') +
-                      (available ? '' : ' unavailable')
-                    }
+                    className={classes}
                     data-t={t.t}
                     onClick={() => playTrack(i)}
-                    style={available ? undefined : { opacity: 0.55, cursor: 'not-allowed' }}
+                    style={available ? undefined : { cursor: 'not-allowed' }}
                   >
                     <div className="n">{t.n}</div>
                     <div className="name">
                       {t.t}
-                      <small>{available ? t.sub : `${t.sub} ◆ próximamente`}</small>
+                      {t.hm && <span className="hm-badge">HM</span>}
+                      <small>{subText}</small>
                     </div>
                     <div className="dur">{t.dur}</div>
                   </div>
