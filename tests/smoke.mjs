@@ -100,17 +100,17 @@ if (djBox && copyBox && Math.abs(djBox.y - copyBox.y) < 300 && copyBox.x > djBox
   )
 }
 
-// --- Mixtape: track 8 plays ---
-await page.locator('.mix-bg .tr').nth(7).click()
-await page.waitForTimeout(300)
+// --- Mixtape: happy-bday track plays (first available src) ---
+await page.locator('.mix-bg .tr').first().click()
+await page.waitForTimeout(400)
 const playing = await page.evaluate(() => {
   const a = document.querySelector('audio')
   return a ? { paused: a.paused, src: a.currentSrc } : null
 })
 if (playing && !playing.paused && /happy-bday-tokki/.test(playing.src)) {
-  pass('track 8 audio element is playing the happy-bday wav')
+  pass('happy-bday track plays from .m4a')
 } else {
-  fail(`track 8 play failed — ${JSON.stringify(playing)}`)
+  fail(`happy-bday play failed — ${JSON.stringify(playing)}`)
 }
 
 // Pause via primary button

@@ -13,3 +13,6 @@ vite.config.d.ts
 .claude/
 skills-lock.json
 CLAUDE.md
+
+# Audio masters — ship compressed .m4a/.mp3 in public/songs/ instead
+public/songs/*.wav

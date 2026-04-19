@@ -12,24 +12,25 @@ type Track = {
 
 const TRACKS: Track[] = [
   {
-    t: "Love you, my little ice cube",
+    t: "Happy Birthday, Kenn!",
     n: "01",
-    sub: "Noe Osorio ◆ Love",
-    dur: "4:44",
+    sub: "Noe Osorio ◆ Hielito",
+    dur: "2:32",
+    src: "/songs/happy-bday-tokki.m4a",
   },
   {
     t: "The more that I love you",
     n: "02",
     sub: "Noe Osorio ◆ Hielito",
     dur: "2:23",
-    src: "/songs/The-more-that-I-love-you.wav",
+    src: "/songs/The-more-that-I-love-you.m4a",
   },
   {
     t: "Warmest Place on Earth",
     n: "03",
     sub: "Noe Osorio ◆ Hielito",
     dur: "3:03",
-    src: "/songs/warmest-place-on-earth.wav",
+    src: "/songs/warmest-place-on-earth.m4a",
   },
   { t: "Oh", n: "04", sub: "Hot Maries ♡ Surf Pop", dur: "2:30", hm: true },
   {
@@ -54,11 +55,10 @@ const TRACKS: Track[] = [
     hm: true,
   },
   {
-    t: "Feliz Cumpleaños Kenn",
+    t: "Love you, my little ice cube",
     n: "08",
-    sub: "Noe Osorio ◆ Hielito",
-    dur: "∞",
-    src: "/songs/happy-bday-tokki.wav",
+    sub: "Noe Osorio ◆ Love",
+    dur: "4:44",
   },
 ];
 

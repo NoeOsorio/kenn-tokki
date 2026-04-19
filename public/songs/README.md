@@ -1,7 +1,19 @@
 # Songs folder
 
-Drop audio files here (`.wav`, `.mp3`, `.m4a`, `.ogg`) to make them playable
-from the mixtape.
+Drop audio files here to make them playable from the mixtape.
+
+**Ship `.m4a` (AAC) or `.mp3`, not `.wav`.** Cloudflare Pages has a 25 MiB
+per-file limit and raw WAVs blow past it quickly (~10 MB/min). A 3-minute
+song at 192 kbps AAC is roughly 4 MB, audibly identical for web playback.
+
+### Convert a WAV with macOS's built-in `afconvert`
+
+```sh
+afconvert -f m4af -d aac -b 192000 input.wav input.m4a
+```
+
+Keep the WAV master outside the repo — `*.wav` in `public/songs/` is
+gitignored.
 
 ## How to add a new song
 
