@@ -320,6 +320,10 @@
   /* DECKS */
   .deck{
     grid-row:2;
+    /* align-self:center prevents the grid row's stretch from overriding
+       aspect-ratio:1, which otherwise turned the deck into an oval when
+       the mixer made the row taller than the deck width. */
+    align-self:center;
     position:relative;aspect-ratio:1;width:100%;max-width:240px;
     border-radius:50%;
     background:#fff4e0;

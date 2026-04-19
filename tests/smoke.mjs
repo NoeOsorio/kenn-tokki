@@ -47,6 +47,20 @@ const before = await readBox()
 if (!before) fail('mixer not found')
 else pass(`mixer initial size ${before.w}x${before.h}`)
 
+// --- Decks must be circular (width ≈ height) ---
+for (const side of ['left', 'right']) {
+  const box = await page.locator(`.deck.${side}`).boundingBox()
+  if (!box) fail(`deck.${side} not found`)
+  else {
+    const ratio = box.width / box.height
+    if (Math.abs(1 - ratio) < 0.02) {
+      pass(`deck.${side} is circular (${Math.round(box.width)}x${Math.round(box.height)})`)
+    } else {
+      fail(`deck.${side} is oval (${Math.round(box.width)}x${Math.round(box.height)}, ratio ${ratio.toFixed(2)})`)
+    }
+  }
+}
+
 await page.screenshot({ path: `${OUT_DIR}/01-before.png`, fullPage: false })
 
 // Click a pad (longest label: "AIRHORN")
