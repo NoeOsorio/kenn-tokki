@@ -9,3 +9,7 @@ node-compile-cache/
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+.agents/
+.claude/
+skills-lock.json
+CLAUDE.md
