@@ -167,8 +167,7 @@ export default function Mixtape() {
                 const classes =
                   'tr' +
                   (active === i ? ' active' : '') +
-                  (available ? '' : ' unavailable') +
-                  (t.hm ? ' hot-maries' : '')
+                  (available ? '' : ' unavailable')
                 const subText = available || t.hm ? t.sub : `${t.sub} ◆ próximamente`
                 return (
                   <div
@@ -176,12 +175,10 @@ export default function Mixtape() {
                     className={classes}
                     data-t={t.t}
                     onClick={() => playTrack(i)}
-                    style={available ? undefined : { cursor: 'not-allowed' }}
                   >
                     <div className="n">{t.n}</div>
                     <div className="name">
                       {t.t}
-                      {t.hm && <span className="hm-badge">HM</span>}
                       <small>{subText}</small>
                     </div>
                     <div className="dur">{t.dur}</div>
