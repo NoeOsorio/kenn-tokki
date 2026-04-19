@@ -934,6 +934,60 @@
     .sig{font-size:18px}
   }
 
+  /* When opened on mobile/narrow screens, expand the card into a
+     full-screen reader so the message is easy to read without the
+     320px flip constraint. Flip animation is suppressed — back face
+     is shown directly. */
+  @media (max-width:720px){
+    .flip.open{
+      position:fixed;inset:0;z-index:150;
+      width:auto;max-width:none;height:auto;aspect-ratio:auto;
+      margin:0;perspective:none;
+      animation:card-rise .28s cubic-bezier(.2,.7,.3,1);
+    }
+    .flip.open .flip-inner{
+      position:static;transform:none !important;
+      width:100%;height:100%;
+    }
+    .flip.open .face{
+      position:relative;inset:auto;
+      transform:none !important;backface-visibility:visible;
+      width:100%;height:100%;
+    }
+    .flip.open .face.front{display:none}
+    .flip.open .face.back{
+      display:flex;flex-direction:column;justify-content:center;
+      padding:72px 28px 56px;
+      overflow-y:auto;overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch;
+      border-radius:0;
+    }
+    .flip.open .msg-h{font-size:34px;line-height:.95}
+    .flip.open .msg-body{font-size:16px;line-height:1.7;max-width:560px;margin:24px auto 0;padding:0 4px}
+    .flip.open .sig{margin-top:24px;font-size:22px;text-align:center}
+    .flip.open .corner{font-size:9px}
+    .flip.open .corner.tl{top:18px;left:18px}
+    .flip.open .corner.br{bottom:18px;right:18px}
+  }
+  @keyframes card-rise{
+    from{opacity:0;transform:translateY(20px) scale(.98)}
+    to{opacity:1;transform:none}
+  }
+
+  /* close button — only shown while open */
+  .close-card{
+    position:absolute;top:14px;right:14px;z-index:3;
+    width:40px;height:40px;border-radius:50%;
+    display:none;align-items:center;justify-content:center;
+    background:rgba(10,10,46,.85);color:#fff4e0;
+    border:1.5px solid rgba(255,244,224,.35);
+    font-family:"DotGothic16",sans-serif;font-size:18px;line-height:1;
+    cursor:pointer;backdrop-filter:blur(6px);
+    transition:transform .15s, background .15s;
+  }
+  .close-card:hover{background:rgba(255,45,149,.9);transform:scale(1.06)}
+  .flip.open .close-card{display:flex}
+
   /* --- Generic headline scale --- */
   @media (max-width:520px){
     .h2{font-size:clamp(36px,11vw,64px);-webkit-text-stroke:1px #0a0a2e;filter:drop-shadow(3px 3px 0 #ff2d95)}

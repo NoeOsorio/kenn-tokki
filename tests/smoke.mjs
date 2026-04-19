@@ -190,13 +190,30 @@ if (p1 && p2 && p2.y > p1.y + p1.height - 10) pass('mobile: photo wall is single
 else fail(`mobile: photo wall not single-column — p1 ${JSON.stringify(p1)} p2 ${JSON.stringify(p2)}`)
 await m.screenshot({ path: `${OUT_DIR}/m4-polaroids.png`, fullPage: false })
 
-// Flip card fits
+// Flip card fits when closed
 await m.locator('#flip').scrollIntoViewIfNeeded()
 await m.waitForTimeout(300)
 const flipBox = await m.locator('#flip').boundingBox()
-if (flipBox && flipBox.width <= viewportW - 20) pass(`mobile: flip card fits (${Math.round(flipBox.width)}px)`)
-else fail(`mobile: flip card overflow (${flipBox && Math.round(flipBox.width)}px)`)
+if (flipBox && flipBox.width <= viewportW - 20) pass(`mobile: closed card fits (${Math.round(flipBox.width)}px)`)
+else fail(`mobile: closed card overflow (${flipBox && Math.round(flipBox.width)}px)`)
 await m.screenshot({ path: `${OUT_DIR}/m5-message.png`, fullPage: false })
+
+// Tap to open — expect full-screen overlay on mobile
+await m.locator('#flip').click()
+await m.waitForTimeout(400)
+const openBox = await m.locator('#flip.open').boundingBox()
+if (openBox && openBox.width >= viewportW - 1 && openBox.height >= 852 - 1) {
+  pass(`mobile: opened card fills viewport (${Math.round(openBox.width)}x${Math.round(openBox.height)})`)
+} else {
+  fail(`mobile: opened card not full-screen (${JSON.stringify(openBox)})`)
+}
+await m.screenshot({ path: `${OUT_DIR}/m6-message-open.png`, fullPage: false })
+
+// Close button works
+await m.locator('.close-card').click()
+await m.waitForTimeout(300)
+const closedCount = await m.locator('#flip.open').count()
+closedCount === 0 ? pass('mobile: close button dismisses full-screen card') : fail('mobile: close button did not close')
 
 if (mErrors.length === 0) pass('mobile: no console errors')
 else fail(`mobile console errors: ${mErrors.slice(0, 3).join(' | ')}`)

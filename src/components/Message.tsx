@@ -1,17 +1,28 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { popConfetti } from '../lib/confetti'
 
 export default function Message() {
   const [open, setOpen] = useState(false)
   const flipRef = useRef<HTMLDivElement>(null)
 
-  const toggle = () => {
-    setOpen((v) => {
-      const next = !v
-      if (next) setTimeout(() => popConfetti(flipRef.current), 0)
-      return next
-    })
+  const openCard = () => {
+    setOpen(true)
+    setTimeout(() => popConfetti(flipRef.current), 0)
   }
+  const closeCard = () => setOpen(false)
+  const toggle = () => (open ? closeCard() : openCard())
+
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeCard()
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
   return (
     <section className="msg-bg" data-screen-label="05 Message">
@@ -34,7 +45,23 @@ export default function Message() {
               <div className="jp-open">クリックしてね</div>
               <div className="open-cue">▾ Haz clic para abrir ▾</div>
             </div>
-            <div className="face back">
+            <div
+              className="face back"
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              <button
+                type="button"
+                className="close-card"
+                aria-label="Cerrar tarjeta"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  closeCard()
+                }}
+              >
+                ✕
+              </button>
               <div className="corner tl">★ ケン ★ KENN ★</div>
               <div className="corner br">★ 2026 ★ 誕生日 ★</div>
               <div className="msg-h">
@@ -64,7 +91,7 @@ export default function Message() {
             textTransform: 'uppercase',
           }}
         >
-          Toca la tarjeta para voltearla ◆ もう一度タップで閉じる
+          Toca la tarjeta para abrirla ◆ tap otra vez para cerrar
         </p>
       </div>
     </section>
