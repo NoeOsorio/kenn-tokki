@@ -1,0 +1,29 @@
+{
+  "name": "Kenn Tokki",
+  "short_name": "Kenn Tokki",
+  "description": "Feliz cumpleaños Kenn Tokki — hecho con ♡ por Noe Osorio.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a0a2e",
+  "background_color": "#0a0a2e",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
