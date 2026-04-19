@@ -95,6 +95,10 @@
       #ffd166 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     -webkit-text-stroke:2px #0a0a2e;
+    /* paint the stroke first so the colored fill sits on top — otherwise
+       the stroke eats into the letters at smaller font sizes and the
+       gradient looks flat-dark. */
+    paint-order:stroke fill;
     filter:drop-shadow(6px 6px 0 #0a0a2e) drop-shadow(0 0 30px rgba(255,45,149,.5));
     text-transform:uppercase;
   }
@@ -139,6 +143,7 @@
     background:linear-gradient(180deg,#fff4e0 0%,#fff4e0 55%,#00e5ff 55%,#00e5ff 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     -webkit-text-stroke:1.5px #0a0a2e;
+    paint-order:stroke fill;
     filter:drop-shadow(4px 4px 0 #ff2d95);
     text-transform:uppercase;
   }
@@ -766,6 +771,7 @@
     background:linear-gradient(180deg,#fff4e0 0%,#fff4e0 55%,#ff2d95 55%,#ff2d95 78%,#ffd166 78%,#ffd166 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     -webkit-text-stroke:1.5px #0a0a2e;
+    paint-order:stroke fill;
     filter:drop-shadow(3px 3px 0 #0a0a2e) drop-shadow(0 0 20px rgba(255,45,149,.4));
   }
   .face.back .msg-h small{
@@ -888,9 +894,14 @@
     .katakana{font-size:11px;letter-spacing:.3em;margin-bottom:12px}
     .title{
       font-size:clamp(44px,14vw,120px);
-      -webkit-text-stroke:1.5px #0a0a2e;
+      /* drop the stroke at mobile sizes — the dark outline was wide
+         enough at small letter widths to eat the gradient fill and
+         the whole title rendered flat-dark. The drop-shadow below
+         still gives the classic vaporwave offset silhouette. */
+      -webkit-text-stroke:0;
       filter:drop-shadow(3px 3px 0 #0a0a2e) drop-shadow(0 0 18px rgba(255,45,149,.5));
     }
+    .title .amp{-webkit-text-stroke:0}
     .subtitle{
       font-size:clamp(16px,4.6vw,24px);
       margin-top:12px;padding:0 10px;
@@ -1043,6 +1054,12 @@
 
   /* --- Generic headline scale --- */
   @media (max-width:520px){
-    .h2{font-size:clamp(36px,11vw,64px);-webkit-text-stroke:1px #0a0a2e;filter:drop-shadow(3px 3px 0 #ff2d95)}
+    .h2{
+      font-size:clamp(36px,11vw,64px);
+      -webkit-text-stroke:0;
+      filter:drop-shadow(3px 3px 0 #ff2d95);
+    }
     .jp{font-size:12px;letter-spacing:.3em}
+    /* full-screen message heading: keep the gradient readable */
+    .flip.open .msg-h{-webkit-text-stroke:0}
   }
