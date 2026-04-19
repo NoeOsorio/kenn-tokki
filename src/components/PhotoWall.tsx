@@ -1,114 +1,19 @@
-import { useEffect, useRef, useState } from 'react'
-import { popConfetti } from '../lib/confetti'
+import { useState } from 'react'
 
-type Slot = { img: string | null; caption: string; date: string }
+type Slot = { src: string; caption: string; date: string }
 
-const WALL_KEY = 'kenn_wall_v1'
-// If a file exists at public/photos/01.jpg .. 08.jpg it is used as the default
-// image for that slot. The user's uploaded photo (in localStorage) still wins.
-const DEFAULT_FILES = ['01', '02', '03', '04', '05', '06', '07', '08'].map(
-  (n) => `/photos/${n}.jpg`
-)
-const DEFAULT_CAPTIONS = [
-  'primera cita ♡',
-  'día de playa',
-  'la cabina',
-  'noche de sushi',
-  'roadtrip',
-  'backstage',
-  'por café',
-  'nuestra canción',
+const SLOTS: Slot[] = [
+  { src: '/photos/01.jpg', caption: 'primera cita ♡', date: '2024 · 03' },
+  { src: '/photos/02.jpg', caption: 'día de playa', date: '2024 · 07' },
+  { src: '/photos/03.jpg', caption: 'la cabina', date: '2024 · 11' },
+  { src: '/photos/04.jpg', caption: 'noche de sushi', date: '2025 · 02' },
+  { src: '/photos/05.jpg', caption: 'roadtrip', date: '2025 · 05' },
+  { src: '/photos/06.jpg', caption: 'backstage', date: '2025 · 08' },
+  { src: '/photos/07.jpg', caption: 'por café', date: '2025 · 11' },
+  { src: '/photos/08.jpg', caption: 'nuestra canción', date: '2026 · 04' },
 ]
-const DEFAULT_DATES = [
-  '2024 · 03',
-  '2024 · 07',
-  '2024 · 11',
-  '2025 · 02',
-  '2025 · 05',
-  '2025 · 08',
-  '2025 · 11',
-  '2026 · 04',
-]
-
-function loadWall(): Slot[] {
-  try {
-    const raw = JSON.parse(localStorage.getItem(WALL_KEY) || '[]') as Partial<Slot>[]
-    const base = Array.from({ length: 8 }, (_, i) => ({
-      img: null as string | null,
-      caption: DEFAULT_CAPTIONS[i] || '',
-      date: DEFAULT_DATES[i] || '',
-    }))
-    raw.forEach((s, i) => {
-      if (i < 8 && s) base[i] = { ...base[i], ...s }
-    })
-    return base
-  } catch {
-    return Array.from({ length: 8 }, (_, i) => ({
-      img: null,
-      caption: DEFAULT_CAPTIONS[i] || '',
-      date: DEFAULT_DATES[i] || '',
-    }))
-  }
-}
-
-function saveWall(state: Slot[]) {
-  try {
-    localStorage.setItem(WALL_KEY, JSON.stringify(state))
-  } catch {}
-}
 
 export default function PhotoWall() {
-  const [wall, setWall] = useState<Slot[]>(() => loadWall())
-  const pendingSlot = useRef<number | null>(null)
-  const fileInput = useRef<HTMLInputElement>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    saveWall(wall)
-  }, [wall])
-
-  const openPicker = (i: number) => {
-    pendingSlot.current = i
-    fileInput.current?.click()
-  }
-
-  const onFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const f = e.target.files?.[0]
-    const idx = pendingSlot.current
-    if (!f || idx === null) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      setWall((prev) => {
-        const next = prev.slice()
-        next[idx] = { ...next[idx], img: ev.target?.result as string }
-        return next
-      })
-      setTimeout(() => {
-        const poly = gridRef.current?.children[idx] as HTMLElement | undefined
-        if (poly) popConfetti(poly)
-      }, 0)
-      pendingSlot.current = null
-      if (fileInput.current) fileInput.current.value = ''
-    }
-    reader.readAsDataURL(f)
-  }
-
-  const updateCaption = (i: number, caption: string) => {
-    setWall((prev) => {
-      const next = prev.slice()
-      next[i] = { ...next[i], caption }
-      return next
-    })
-  }
-
-  const remove = (i: number) => {
-    setWall((prev) => {
-      const next = prev.slice()
-      next[i] = { ...next[i], img: null }
-      return next
-    })
-  }
-
   return (
     <section className="pokes" data-screen-label="04 Photo Wall">
       <div className="wrap">
@@ -123,86 +28,58 @@ export default function PhotoWall() {
           思い出のポラロイド
         </div>
 
-        <div className="poke-grid" id="pokeGrid" ref={gridRef}>
-          {wall.map((slot, i) => (
-            <div key={i} className={'polaroid' + (slot.img ? ' filled' : '')}>
-              <div
-                className="remove"
-                title="Remove photo"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  remove(i)
-                }}
-              >
-                ✕
-              </div>
-              <div
-                className="photo"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  openPicker(i)
-                }}
-              >
+        <div className="poke-grid" id="pokeGrid">
+          {SLOTS.map((slot, i) => (
+            <div key={i} className="polaroid filled">
+              <div className="photo">
                 <div className="photo-index">No. {String(i + 1).padStart(2, '0')}</div>
-                <SlotImage uploaded={slot.img} index={i} />
+                <SlotImage src={slot.src} index={i} />
               </div>
               <div className="caption">
-                <input
-                  type="text"
-                  value={slot.caption}
-                  placeholder="write a caption…"
-                  maxLength={40}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => updateCaption(i, e.target.value)}
-                />
+                <span className="caption-text">{slot.caption}</span>
               </div>
               <div className="date">{slot.date}</div>
             </div>
           ))}
         </div>
-        <div className="wall-hint">
-          Haz clic en una polaroid para agregar foto <b>◆</b> escribe tu caption <b>◆</b> se guarda en este dispositivo
-        </div>
       </div>
-
-      <input
-        type="file"
-        id="photoInput"
-        ref={fileInput}
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={onFile}
-      />
     </section>
   )
 }
 
-function SlotImage({ uploaded, index }: { uploaded: string | null; index: number }) {
-  const [defaultLoaded, setDefaultLoaded] = useState(false)
-  const [defaultFailed, setDefaultFailed] = useState(false)
-
-  if (uploaded) return <img src={uploaded} alt={`memory ${index + 1}`} />
-
-  const empty = (
-    <div className="photo-empty">
-      <div className="plus">＋</div>
-      <div className="jp-add">写真を追加</div>
-      <div className="lbl">Agregar foto</div>
-    </div>
-  )
-
-  if (defaultFailed) return empty
+/**
+ * Renders the polaroid image. The striped placeholder (`.photo-empty`)
+ * is shown underneath while the image loads and stays visible if the
+ * request ever fails — so the card never appears blank on slow networks
+ * or when a file is missing.
+ */
+function SlotImage({ src, index }: { src: string; index: number }) {
+  const [loaded, setLoaded] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   return (
     <>
-      {!defaultLoaded && empty}
-      <img
-        src={DEFAULT_FILES[index]}
-        alt={`memory ${index + 1}`}
-        style={{ display: defaultLoaded ? 'block' : 'none' }}
-        onLoad={() => setDefaultLoaded(true)}
-        onError={() => setDefaultFailed(true)}
-      />
+      {!loaded && <FallbackPlaceholder />}
+      {!failed && (
+        <img
+          src={src}
+          alt={`memory ${index + 1}`}
+          decoding="async"
+          style={{ display: loaded ? 'block' : 'none' }}
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+        />
+      )}
     </>
+  )
+}
+
+function FallbackPlaceholder() {
+  return (
+    <div className="photo-empty" aria-hidden="true">
+      <div className="plus">♡</div>
+      <div className="jp-add">読み込み中</div>
+      <div className="lbl">Cargando…</div>
+    </div>
   )
 }

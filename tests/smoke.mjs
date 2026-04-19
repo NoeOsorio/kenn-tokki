@@ -197,11 +197,20 @@ await m.screenshot({ path: `${OUT_DIR}/m3-dj.png`, fullPage: false })
 
 // Polaroids: single column
 await m.locator('.pokes').scrollIntoViewIfNeeded()
-await m.waitForTimeout(300)
+await m.waitForTimeout(1200)
 const p1 = await m.locator('.pokes .polaroid').first().boundingBox()
 const p2 = await m.locator('.pokes .polaroid').nth(1).boundingBox()
 if (p1 && p2 && p2.y > p1.y + p1.height - 10) pass('mobile: photo wall is single column')
 else fail(`mobile: photo wall not single-column — p1 ${JSON.stringify(p1)} p2 ${JSON.stringify(p2)}`)
+
+// Photos actually load from /photos/*.jpg
+const loadedImgs = await m.evaluate(() =>
+  Array.from(document.querySelectorAll('.pokes img'))
+    .filter((i) => i.complete && i.naturalWidth > 0).length
+)
+if (loadedImgs >= 4) pass(`mobile: static photos load (${loadedImgs}/8 complete)`)
+else fail(`mobile: photos not loading (${loadedImgs}/8)`)
+
 await m.screenshot({ path: `${OUT_DIR}/m4-polaroids.png`, fullPage: false })
 
 // Flip card fits when closed
