@@ -122,7 +122,7 @@ paused ? pass('primary button pauses audio') : fail('primary button did not paus
 // --- Flip card opens as full-screen on desktop too ---
 await page.locator('#flip').scrollIntoViewIfNeeded()
 await page.locator('#flip').click()
-await page.waitForTimeout(400)
+await page.waitForTimeout(500)
 const open = await page.locator('#flip.open').count()
 open ? pass('flip card opens on click') : fail('flip card did not open')
 const dOpenBox = await page.locator('#flip.open').boundingBox()
@@ -131,6 +131,12 @@ if (dOpenBox && dOpenBox.width >= 1440 - 1 && dOpenBox.height >= 900 - 1) {
 } else {
   fail(`desktop: opened card not full-screen (${JSON.stringify(dOpenBox)})`)
 }
+
+// Confetti splash renders pieces in the DOM
+const pieceCount = await page.locator('#confetti .piece').count()
+if (pieceCount > 60) pass(`confetti splash fires on open (${pieceCount} pieces)`)
+else fail(`confetti splash did not fire (${pieceCount} pieces)`)
+
 await page.locator('.close-card').click()
 await page.waitForTimeout(200)
 

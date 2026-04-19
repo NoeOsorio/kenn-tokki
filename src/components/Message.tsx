@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { popConfetti } from '../lib/confetti'
+import { popConfettiSplash } from '../lib/confetti'
 
 export default function Message() {
   const [open, setOpen] = useState(false)
@@ -7,7 +7,9 @@ export default function Message() {
 
   const openCard = () => {
     setOpen(true)
-    setTimeout(() => popConfetti(flipRef.current), 0)
+    // Wait one frame so the full-screen layout settles, then fire
+    // the multi-point splash over the opened card.
+    requestAnimationFrame(() => popConfettiSplash())
   }
   const closeCard = () => setOpen(false)
   const toggle = () => (open ? closeCard() : openCard())

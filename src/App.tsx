@@ -18,7 +18,7 @@ export default function App() {
       <DjDeck />
       <PhotoWall />
       <Message />
-      <canvas id="confetti" />
+      <div id="confetti" className="confetti" />
     </>
   )
 }
