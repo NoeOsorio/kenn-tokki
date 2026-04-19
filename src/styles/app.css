@@ -260,14 +260,9 @@
 
   /* ============ DJ CONTROLLER ============ */
   .dj-wrap{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:96px;align-items:center;
+    display:grid;grid-template-columns:1.3fr .9fr;gap:40px;align-items:center;
   }
-  .dj-wrap > .surf-copy{padding-left:8px}
-  @media (max-width:980px){
-    .dj-wrap{grid-template-columns:1fr;gap:56px}
-    .dj-wrap > .surf-copy{padding-left:0}
-  }
+  @media (max-width:980px){.dj-wrap{grid-template-columns:1fr}}
 
   .dj{
     position:relative;width:100%;max-width:720px;margin:0 auto;
